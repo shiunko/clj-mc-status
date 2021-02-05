@@ -8,7 +8,7 @@
   (:require
     [cheshire.core :refer :all]))
 
-(defn read-var-int
+(defn- read-var-int
   [^InputStream in]
   (loop [i 0
          data 0]
@@ -97,28 +97,5 @@
                 )))
           (recur (inc i)))))
 
-    )
-  )
-
-(defn -main
-  [& args]
-  (let [server-info (get-server-info {:host "dns1.zthc.net"
-                                      :port 40098})
-        ;favicon (-> server-info :favicon (.replaceAll "data:image/png;base64," "") (.replaceAll "\n" ""))
-        ]
-    (try
-      (println (format "server description: %s\nplayer[%d/%d]-%s\nmods%s"
-                       (-> server-info :description :text)
-                       (-> server-info :players :online)
-                       (-> server-info :players :max)
-                       (vec (for [info (-> server-info :players :sample)]
-                              (:name info)))
-                       (vec (for [mods (-> server-info :modinfo :modList)]
-                              (format "%s-%s" (:modid mods) (:version mods))))
-                       ))
-      (catch Exception e
-        (println server-info)
-        ))
-    ;(prn-pic favicon)
     )
   )
